@@ -26,7 +26,7 @@ class Controller {
     } 
 
     public String[] input() {
-        Scanner input = new Scanner(System.in);
+    Scanner input = new Scanner(System.in);
 		System.out.print("Start: ");
 		String start = input.nextLine();
 		System.out.print("Target: ");

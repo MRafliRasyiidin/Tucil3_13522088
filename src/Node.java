@@ -3,30 +3,36 @@ import java.util.*;
 public class Node {
     protected Node prev;
     protected String word;
+    private int cost;
     
 	public Node() {
 		this.prev = null;
-		//this.lastWord = "";
+        this.cost = 0;
 	}
 
     public Node(Node n) {
         this.prev = n.prev;
         this.word = n.word;
+        this.cost = n.cost;
     }
 
-	public Node(Node parent, String word) {
+	public Node(Node parent, String word, int cost) {
         this.prev = parent;
         this.word = word;
+        this.cost = cost;
 	}
 
-	public void setAll(Node parent, String word) {
+    public void copy(Node el) {
+        this.cost = el.cost;
+        this.prev = el.prev;
+        this.word = el.word;
+    }
+
+	public void setAll(Node parent, String word, int cost) {
         this.prev = parent;
         this.word = word;
+        this.cost = cost;
 	}
-
-	//public String getLastWord() {
-	//	return this.lastWord;
-	//}
 
     public Node getParent() {
         return this.prev;
@@ -56,25 +62,6 @@ public class Node {
         }
         return count;
     }
-}
-
-class GreedyNode extends Node {
-    private int cost;
-
-    public GreedyNode() {
-        super();
-        this.cost = 0;
-    }
-
-    public GreedyNode(GreedyNode n) {
-        super(n);
-        this.cost = n.cost;
-    }
-
-	public GreedyNode(GreedyNode parent, String word, int cost) {
-        super(parent, word);
-        this.cost = cost;
-	}
 
     public int getCost() {
         return this.cost;
@@ -88,5 +75,15 @@ class GreedyNode extends Node {
             }
         }
         return count;
+    }
+}
+
+class CostComparator implements Comparator<Node> {
+    public int compare(Node c1, Node c2) {
+        if (c1.getCost() < c2.getCost())
+            return -1;
+        else if (c1.getCost() > c2.getCost())
+            return 1;
+        return 0;
     }
 }

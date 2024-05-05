@@ -1,13 +1,17 @@
 import java.util.*;
 
 public class AStar extends GBFS {
-    private PriorityQueue<GreedyNode> queue;
-    private List<String> expandedNode;
+    private PriorityQueue<Node> queue;
+    private Map<String, Boolean> expandedNode;
+    private Map<Node, Integer> costList;
+    //private List<String> expandedNode;
     private boolean found;
 
     public AStar() {
-        this.queue = new PriorityQueue<GreedyNode>(10, new CostComparator());
-        this.expandedNode = new ArrayList<String>();
+        this.queue = new PriorityQueue<Node>(10, new CostComparator());
+        //this.expandedNode = new ArrayList<String>();
+        this.costList = new HashMap<Node, Integer>();
+        this.expandedNode = new HashMap<String, Boolean>();
         this.found = false;
     }
 
@@ -26,7 +30,7 @@ public class AStar extends GBFS {
 			System.out.println("Gabisa bro kalo panjangnya beda");
 		}
 		else {
-            GreedyNode startParent = new GreedyNode(null, start, 0);
+            Node startParent = new Node(null, start, 0);
 			long begin = System.currentTimeMillis();
 			for (int i = 0; i < start.length() && !this.found; i++) {
 				char charAt = start.charAt(i);
@@ -34,49 +38,45 @@ public class AStar extends GBFS {
 					if (c != charAt) {
 						String word = start.substring(0, i) + c + start.substring(i + 1);
 						if (this.listWord.get(word) != null) {
-							GreedyNode current = new GreedyNode(startParent, word, getCost(word, target)+1);
+							Node current = new Node(startParent, word, getCost(word, target) + 1);
+                            this.costList.put(current, 1);
 							this.queue.add(current);
 						}
 					}
 				}
 			}
-            for (int i = 0; i < queue.size(); i++) {
-                GreedyNode a = queue.poll();
-                //System.out.println("ini:" + a.getWord() + " " + a.getCost());
-            }
-            //int idx = 0;
-			for (int i = 0; !this.found; i++) {
-                if (queue.peek().getWord().equals(target)) {
+            Node targetNode = new Node();
+			while (!this.found) {
+                Node temp = queue.poll();
+                if (temp.getWord().equals(target)) {
                     found = true;
+                    targetNode.copy(temp);
                 }
                 else {
-                    GreedyNode temp = queue.poll();
                     aStarLoop(temp, target);
-					expandedNode.add(temp.getWord());
-                    //System.out.println(temp.getWord() + " " + temp.getCost());
+					expandedNode.put(temp.getWord(), true);
                 }
 			}
 			long end = System.currentTimeMillis();
 			System.out.println(this.found);
-			System.out.println(this.queue.peek().getWord());
-            List<String> pathList = new ArrayList<String>(this.queue.peek().getPath());
-			pathList.add(0, target);
+			System.out.println(targetNode.getWord());
+            List<String> pathList = new ArrayList<String>(targetNode.getPath());
             Collections.reverse(pathList);
 			System.out.println(pathList);
 			System.out.printf("Time elapsed: %d ms\n", end-begin);	
 		}
     }
 
-    public void aStarLoop(GreedyNode el, String end) {
+    public void aStarLoop(Node el, String end) {
         for (int i = 0; i < el.getWord().length() && !this.found; i++) {
 			char charAt = el.getWord().charAt(i);
 			for (char c = 'a'; c <= 'z' && !this.found;c++) {
 				if (c != charAt) {
 					String word = el.getWord().substring(0, i) + c + el.getWord().substring(i + 1);
-					if (this.listWord.get(word) != null && !expandedNode.contains(word)) {
-                        int cost = el.getCostFromParentUCS() + getCost(word, end);
-                        GreedyNode current = new GreedyNode(el, word, cost);
-                        //System.out.println(el.getWord() + " " + word);
+					if (this.listWord.get(word) != null && expandedNode.get(word) == null) {
+                        int g_n_cost = this.costList.get(el);
+                        Node current = new Node(el, word, g_n_cost + getCost(word, end));
+                        this.costList.put(current, g_n_cost + 1);
 						this.queue.add(current);
 					}
 				}

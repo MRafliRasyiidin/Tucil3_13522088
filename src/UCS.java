@@ -1,23 +1,16 @@
 import java.util.*;
 
-/**
- * searchElement
- */
-
-/**
- * Node
- */
 public class UCS extends Controller{
-	private List<Node> listPath;
+	private PriorityQueue<Node> listPath;
 	private boolean found;
-	private List<String> expandedNode;
-    //private StringBuilder proccessedString;
-	
+	private Map<String, Boolean> expandedNode;	
+	private Map<Node, Integer> costList;
 	
     public UCS() {
 		super();
-		this.listPath = new ArrayList<Node>();
-		this.expandedNode = new ArrayList<String>();
+		this.listPath = new PriorityQueue<Node>(10, new CostComparator());
+		this.costList = new HashMap<Node, Integer>();
+		this.expandedNode = new HashMap<String, Boolean>();
 		this.found = false;
     }
 
@@ -26,7 +19,7 @@ public class UCS extends Controller{
 			System.out.println("Gabisa bro kalo panjangnya beda");
 		}
 		else {
-            Node startParent = new Node(null, start);
+            Node startParent = new Node(null, start, 0);
 			long begin = System.currentTimeMillis();
 			for (int i = 0; i < start.length() && !this.found; i++) {
 				char charAt = start.charAt(i);
@@ -34,47 +27,36 @@ public class UCS extends Controller{
 					if (c != charAt) {
 						String word = start.substring(0, i) + c + start.substring(i + 1);
 						if (this.listWord.get(word) != null) {
-							Node current = new Node(startParent, word);
+							Node current = new Node(startParent, word, 1);
+							this.costList.put(current, 1);
 							this.listPath.add(current);
 						}
-						//if (word.equals(target)) {
-						//	this.found = true;
-						//}
 					}
 				}
 			}
-            //int idx = 0;
-			for (int i = 0; !this.found; i++) {
-				//System.out.print("Processed list: ");
-				//System.out.println(listPath.get(i).getList());
-                if (listPath.get(0).getWord().equals(target)) {
+			Node targetNode = new Node();
+			while (!this.found) {
+				Node temp = listPath.poll();
+                if (temp.getWord().equals(target)) {
                     found = true;
+					targetNode.copy(temp);
                 }
                 else {
-                    ucsLoop(listPath.get(0), target);
-					expandedNode.add(listPath.get(0).getWord());
-                    listPath.remove(0);
+                    ucsLoop(temp, target);
+					expandedNode.put(temp.getWord(), true);
                 }
-                
-				//System.out.println(i);
-				
-				//System.out.println(listPath.get(5).getList());
 			}
 			long end = System.currentTimeMillis();
 			System.out.println(this.found);
-			System.out.println(this.listPath.get(listPath.size()-1).getWord());
-            List<String> pathList = new ArrayList<String>(this.listPath.get(0).getPath());
-			pathList.add(0, target);
+			System.out.println(targetNode.getWord());
+            List<String> pathList = new ArrayList<String>(targetNode.getPath());
             Collections.reverse(pathList);
 			System.out.println(pathList);
-			//System.out.println(this.listPath.get(listPath.size()-1).getList());
-			//System.out.println(this.listPath.get(listPath.size()-1).getCost());
 			System.out.printf("Time elapsed: %d\n", end-begin);	
 
 		}
 
 	}
-
 
 	public void ucsLoop(Node el, String end) {
 		for (int i = 0; i < el.getWord().length() && !this.found; i++) {
@@ -82,19 +64,16 @@ public class UCS extends Controller{
 			for (char c = 'a'; c <= 'z' && !this.found;c++) {
 				if (c != charAt) {
 					String word = el.getWord().substring(0, i) + c + el.getWord().substring(i + 1);
-					if (this.listWord.get(word) != null && !expandedNode.contains(word)) {
-                        Node current = new Node(el, word);
-                        //System.out.println(el.getWord() + " " + word);
-
-						if (word.equals(end)) {
-							this.found = true;
-						}
+					if (this.listWord.get(word) != null && expandedNode.get(word) == null) {
+                        Node current = new Node(el, word, this.costList.get(el));
+						this.costList.put(current, current.getCost()+1);
 						this.listPath.add(current);
 					}
 				}
 			}
 		}
 	}
+
     public static void main(String[] args) {
       UCS x = new UCS();
 	  String[] input = x.input();
