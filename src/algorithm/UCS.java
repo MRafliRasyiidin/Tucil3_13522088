@@ -1,3 +1,4 @@
+package algorithm;
 import java.util.*;
 
 public class UCS extends Controller{
@@ -14,26 +15,15 @@ public class UCS extends Controller{
 		this.found = false;
     }
 
-	public void ucs(String start, String target) {
+	public ReturnElement ucs(String start, String target) {
 		if (start.length() != target.length()) {
 			System.out.println("Gabisa bro kalo panjangnya beda");
 		}
 		else {
             Node startParent = new Node(null, start, 0);
+			this.listPath.add(startParent);
+			this.costList.put(startParent, 0);
 			long begin = System.currentTimeMillis();
-			for (int i = 0; i < start.length() && !this.found; i++) {
-				char charAt = start.charAt(i);
-				for (char c = 'a'; c <= 'z' && !this.found;c++) {
-					if (c != charAt) {
-						String word = start.substring(0, i) + c + start.substring(i + 1);
-						if (this.listWord.get(word) != null) {
-							Node current = new Node(startParent, word, 1);
-							this.costList.put(current, 1);
-							this.listPath.add(current);
-						}
-					}
-				}
-			}
 			Node targetNode = new Node();
 			while (!this.found) {
 				Node temp = listPath.poll();
@@ -53,9 +43,9 @@ public class UCS extends Controller{
             Collections.reverse(pathList);
 			System.out.println(pathList);
 			System.out.printf("Time elapsed: %d\n", end-begin);	
-
+			return new ReturnElement(pathList, end-begin);
 		}
-
+		return null;
 	}
 
 	public void ucsLoop(Node el, String end) {
@@ -73,10 +63,4 @@ public class UCS extends Controller{
 			}
 		}
 	}
-
-    public static void main(String[] args) {
-      UCS x = new UCS();
-	  String[] input = x.input();
-      x.ucs(input[0], input[1]);
-    }
 }

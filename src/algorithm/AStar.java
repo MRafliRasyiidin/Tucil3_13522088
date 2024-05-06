@@ -1,3 +1,4 @@
+package algorithm;
 import java.util.*;
 
 public class AStar extends GBFS {
@@ -9,7 +10,6 @@ public class AStar extends GBFS {
 
     public AStar() {
         this.queue = new PriorityQueue<Node>(10, new CostComparator());
-        //this.expandedNode = new ArrayList<String>();
         this.costList = new HashMap<Node, Integer>();
         this.expandedNode = new HashMap<String, Boolean>();
         this.found = false;
@@ -25,26 +25,28 @@ public class AStar extends GBFS {
         return count;
     }
 
-    public void aStar(String start, String target) {
+    public ReturnElement aStar(String start, String target) {
         if (start.length() != target.length()) {
 			System.out.println("Gabisa bro kalo panjangnya beda");
 		}
 		else {
             Node startParent = new Node(null, start, 0);
+            this.queue.add(startParent);
+			this.costList.put(startParent, getCost(start, target));
 			long begin = System.currentTimeMillis();
-			for (int i = 0; i < start.length() && !this.found; i++) {
-				char charAt = start.charAt(i);
-				for (char c = 'a'; c <= 'z' && !this.found;c++) {
-					if (c != charAt) {
-						String word = start.substring(0, i) + c + start.substring(i + 1);
-						if (this.listWord.get(word) != null) {
-							Node current = new Node(startParent, word, getCost(word, target) + 1);
-                            this.costList.put(current, 1);
-							this.queue.add(current);
-						}
-					}
-				}
-			}
+			//for (int i = 0; i < start.length() && !this.found; i++) {
+			//	char charAt = start.charAt(i);
+			//	for (char c = 'a'; c <= 'z' && !this.found;c++) {
+			//		if (c != charAt) {
+			//			String word = start.substring(0, i) + c + start.substring(i + 1);
+			//			if (this.listWord.get(word) != null) {
+			//				Node current = new Node(startParent, word, getCost(word, target) + 1);
+            //                this.costList.put(current, 1);
+			//				this.queue.add(current);
+			//			}
+			//		}
+			//	}
+			//}
             Node targetNode = new Node();
 			while (!this.found) {
                 Node temp = queue.poll();
@@ -64,7 +66,9 @@ public class AStar extends GBFS {
             Collections.reverse(pathList);
 			System.out.println(pathList);
 			System.out.printf("Time elapsed: %d ms\n", end-begin);	
+			return new ReturnElement(pathList, end-begin);
 		}
+        return null;
     }
 
     public void aStarLoop(Node el, String end) {
@@ -83,11 +87,4 @@ public class AStar extends GBFS {
 			}
 		}
     }
-
-    public static void main(String[] args) {
-        AStar x = new AStar();
-	    String[] input = x.input();
-        x.aStar(input[0], input[1]);
-    }
-    
 }

@@ -1,3 +1,4 @@
+import src.Algorithm.*;
 import java.util.*;
 
 public class Main {
@@ -5,8 +6,8 @@ public class Main {
         System.out.println("Word Ladder Solver");
         System.out.println("Pilih metode pencarian solusi:");
         System.out.println("1. UCS");
-        System.out.println("1. Greedy Best First Search");
-        System.out.println("1. A*");
+        System.out.println("2. Greedy Best First Search");
+        System.out.println("3. A*");
         System.out.print(">> ");
         Scanner methodInput = new Scanner(System.in);
 		String start = methodInput.nextLine();
@@ -28,5 +29,6 @@ public class Main {
         else {
             System.out.println("Input tidak valid!");
         }
+        methodInput.close();
     }
 }

@@ -1,8 +1,9 @@
+package algorithm;
 import java.util.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 
-class Controller {
+public class Controller {
 	protected Map<String, Boolean> listWord;
     
     public Controller() {
@@ -12,7 +13,7 @@ class Controller {
 
     public void readEnglishWord() {
         try {
-            File myObj = new File("words.txt");
+            File myObj = new File("Dictionary/words.txt");
             Scanner myReader = new Scanner(myObj);
             while (myReader.hasNextLine()) {
               String data = myReader.nextLine();
@@ -24,6 +25,14 @@ class Controller {
             e.printStackTrace();
           }
     } 
+
+    public boolean isWord(String word) {
+      boolean status = true;
+      if (this.listWord.get(word) == null) {
+        status = false;
+      }
+      return status;
+    }
 
     public String[] input() {
     Scanner input = new Scanner(System.in);

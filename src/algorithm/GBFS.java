@@ -1,3 +1,4 @@
+package algorithm;
 import java.util.*;
 
 public class GBFS extends Controller {
@@ -21,25 +22,26 @@ public class GBFS extends Controller {
         return count;
     }
 
-    public void gbfs(String start, String target) {
+    public ReturnElement gbfs(String start, String target) {
         if (start.length() != target.length()) {
 			System.out.println("Gabisa bro kalo panjangnya beda");
 		}
 		else {
-            Node startParent = new Node(null, start, 0);
+            Node startParent = new Node(null, start, getCost(start, target));
+            this.queue.add(startParent);
 			long begin = System.currentTimeMillis();
-			for (int i = 0; i < start.length() && !this.found; i++) {
-				char charAt = start.charAt(i);
-				for (char c = 'a'; c <= 'z' && !this.found;c++) {
-					if (c != charAt) {
-						String word = start.substring(0, i) + c + start.substring(i + 1);
-						if (this.listWord.get(word) != null) {
-							Node current = new Node(startParent, word, getCost(word, target));
-							this.queue.add(current);
-						}
-					}
-				}
-			}
+			//for (int i = 0; i < start.length() && !this.found; i++) {
+			//	char charAt = start.charAt(i);
+			//	for (char c = 'a'; c <= 'z' && !this.found;c++) {
+			//		if (c != charAt) {
+			//			String word = start.substring(0, i) + c + start.substring(i + 1);
+			//			if (this.listWord.get(word) != null) {
+			//				Node current = new Node(startParent, word, getCost(word, target));
+			//				this.queue.add(current);
+			//			}
+			//		}
+			//	}
+			//}
             //int idx = 0;
             Node targetEl = new Node();
 			while (!this.found) {
@@ -60,7 +62,9 @@ public class GBFS extends Controller {
             Collections.reverse(pathList);
 			System.out.println(pathList);
 			System.out.printf("Time elapsed: %d ms\n", end-begin);	
+			return new ReturnElement(pathList, end-begin);
 		}
+        return null;
     }
 
     public void gbfsLoop(Node el, String end) {
@@ -77,11 +81,4 @@ public class GBFS extends Controller {
 			}
 		}
     }
-
-    public static void main(String[] args) {
-        GBFS x = new GBFS();
-	    String[] input = x.input();
-        x.gbfs(input[0], input[1]);
-    }
-    
 }
