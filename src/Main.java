@@ -1,4 +1,4 @@
-import src.Algorithm.*;
+import algorithm.*;
 import java.util.*;
 
 public class Main {

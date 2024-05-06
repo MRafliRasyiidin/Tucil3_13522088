@@ -13,7 +13,7 @@ public class Controller {
 
     public void readEnglishWord() {
         try {
-            File myObj = new File("Dictionary/words.txt");
+            File myObj = new File("src/Dictionary/words.txt");
             Scanner myReader = new Scanner(myObj);
             while (myReader.hasNextLine()) {
               String data = myReader.nextLine();

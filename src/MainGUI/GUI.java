@@ -1,9 +1,5 @@
 package MainGUI;
-import algorithm.GBFS;
-import algorithm.UCS;
-import algorithm.AStar;
-import algorithm.Controller;
-import algorithm.ReturnElement;
+import algorithm.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
