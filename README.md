@@ -2,7 +2,7 @@
 Program untuk menyelesaikan permainan Word Ladder
 
 # Deskripsi Program
-Word Ladder merupakan permainan untuk membuat rantai kata yang menghubungkan start word ke target word dimana setiap kata pada rantai kata hanya dapat berbeda satu huruf dari kata sebelumnya.
+Word Ladder merupakan permainan untuk membuat rantai kata yang menghubungkan start word ke target word dimana setiap kata pada rantai kata hanya dapat berbeda satu huruf dari kata sebelumnya
 
 Program ini dapat memberikan solusi untuk permainan Word Ladder dengan menggunakan 3 algoritma, yaitu Uniform Cost Search, Greedy Best First Search, dan A*
 
@@ -12,7 +12,7 @@ Gunakan perintah berikut pada command prompt untuk mengecek versi java yang teri
 ```
 java --version
 ```
-Program telah dites pada java versi 20.0.2. Jika terdapat kendala ketika menjalankan program, coba gunakan versi java tersebut.
+Program telah dites pada java versi 20.0.2. Jika terdapat masalah ketika menjalankan program, coba gunakan versi java tersebut.
 
 # Cara Menjalankan Program
 1. Masuk ke dalam folder src
