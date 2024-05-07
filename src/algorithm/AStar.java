@@ -5,7 +5,6 @@ public class AStar extends GBFS {
     private PriorityQueue<Node> queue;
     private Map<String, Boolean> expandedNode;
     private Map<Node, Integer> costList;
-    //private List<String> expandedNode;
     private boolean found;
 
     public AStar() {
@@ -34,21 +33,9 @@ public class AStar extends GBFS {
             this.queue.add(startParent);
 			this.costList.put(startParent, getCost(start, target));
 			long begin = System.currentTimeMillis();
-			//for (int i = 0; i < start.length() && !this.found; i++) {
-			//	char charAt = start.charAt(i);
-			//	for (char c = 'a'; c <= 'z' && !this.found;c++) {
-			//		if (c != charAt) {
-			//			String word = start.substring(0, i) + c + start.substring(i + 1);
-			//			if (this.listWord.get(word) != null) {
-			//				Node current = new Node(startParent, word, getCost(word, target) + 1);
-            //                this.costList.put(current, 1);
-			//				this.queue.add(current);
-			//			}
-			//		}
-			//	}
-			//}
             Node targetNode = new Node();
-			while (!this.found) {
+            int nodeCount = 0;
+            while (!this.found) {
                 Node temp = queue.poll();
                 if (temp.getWord().equals(target)) {
                     found = true;
@@ -57,6 +44,7 @@ public class AStar extends GBFS {
                 else {
                     aStarLoop(temp, target);
 					expandedNode.put(temp.getWord(), true);
+                    nodeCount += 1;
                 }
 			}
 			long end = System.currentTimeMillis();
@@ -65,8 +53,9 @@ public class AStar extends GBFS {
             List<String> pathList = new ArrayList<String>(targetNode.getPath());
             Collections.reverse(pathList);
 			System.out.println(pathList);
-			System.out.printf("Time elapsed: %d ms\n", end-begin);	
-			return new ReturnElement(pathList, end-begin);
+			System.out.printf("Time elapsed: %d ms\n", end-begin);
+			System.out.println((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory())/1024);
+			return new ReturnElement(pathList, end-begin, nodeCount);
 		}
         return null;
     }

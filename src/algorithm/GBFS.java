@@ -30,20 +30,8 @@ public class GBFS extends Controller {
             Node startParent = new Node(null, start, getCost(start, target));
             this.queue.add(startParent);
 			long begin = System.currentTimeMillis();
-			//for (int i = 0; i < start.length() && !this.found; i++) {
-			//	char charAt = start.charAt(i);
-			//	for (char c = 'a'; c <= 'z' && !this.found;c++) {
-			//		if (c != charAt) {
-			//			String word = start.substring(0, i) + c + start.substring(i + 1);
-			//			if (this.listWord.get(word) != null) {
-			//				Node current = new Node(startParent, word, getCost(word, target));
-			//				this.queue.add(current);
-			//			}
-			//		}
-			//	}
-			//}
-            //int idx = 0;
             Node targetEl = new Node();
+            int nodeCount = 0;
 			while (!this.found) {
                 Node temp = queue.poll();
                 if (temp.getWord().equals(target)) {
@@ -53,6 +41,7 @@ public class GBFS extends Controller {
                 else {
                     gbfsLoop(temp, target);
 					expandedNode.add(temp.getWord());
+                    nodeCount += 1;
                 }
 			}
 			long end = System.currentTimeMillis();
@@ -62,7 +51,9 @@ public class GBFS extends Controller {
             Collections.reverse(pathList);
 			System.out.println(pathList);
 			System.out.printf("Time elapsed: %d ms\n", end-begin);	
-			return new ReturnElement(pathList, end-begin);
+			System.out.println((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory())/1024);
+            System.out.println(pathList.size()-1);
+			return new ReturnElement(pathList, end-begin, nodeCount);
 		}
         return null;
     }

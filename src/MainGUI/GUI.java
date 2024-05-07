@@ -17,7 +17,6 @@ public class GUI {
         frame.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
 
-
         // Input and submit button
         JLabel startLabel = new JLabel("Start word:");
         JTextField startTextField = new JTextField(15);
@@ -25,8 +24,9 @@ public class GUI {
         JTextField targetTextField = new JTextField(15);
         JButton button = new JButton("Submit");
         button.setPreferredSize(new Dimension(100,20));
-        JLabel timeOutput = new JLabel("Time elapsed: -");
+        JLabel timeOutput = new JLabel("Elapsed time: -");
         JLabel methodWarning = new JLabel("");
+        JLabel visitedNode = new JLabel("Visited node: -");
 
         // Searching method
         ButtonGroup g = new ButtonGroup();
@@ -99,17 +99,20 @@ public class GUI {
         frame.add(timeOutput, gbc);
         gbc.gridx = 0;
         gbc.gridy = 10;
-        frame.add(outputPanel, gbc);
+        frame.add(visitedNode, gbc);
         gbc.gridx = 0;
         gbc.gridy = 11;
+        frame.add(outputPanel, gbc);
+        gbc.gridx = 0;
+        gbc.gridy = 12;
         frame.add(methodWarning, gbc);
         
 
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String start = startTextField.getText();
-                String target = targetTextField.getText();
+                String start = startTextField.getText().toLowerCase();
+                String target = targetTextField.getText().toLowerCase();
                 if (start.length() == 0 || target.length() == 0) {
                     methodWarning.setText("Pastikan input tidak kosong!");
                 }
@@ -144,14 +147,12 @@ public class GUI {
                             output.append(pathResult.get(i) + "\n");
                         }
                         output.setCaretPosition(0);
-                        timeOutput.setText("Time elapsed: " + result.getTime() + " ms");
+                        timeOutput.setText("Elapsed time: " + result.getTime() + " ms");
+                        visitedNode.setText("Visited node: " + result.getVisitedNode());
                     }
                 }
             }
         });
-        
-        
-        
         frame.setVisible(true);
     }
     

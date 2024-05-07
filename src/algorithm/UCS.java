@@ -25,6 +25,7 @@ public class UCS extends Controller{
 			this.costList.put(startParent, 0);
 			long begin = System.currentTimeMillis();
 			Node targetNode = new Node();
+            int nodeCount = 0;
 			while (!this.found) {
 				Node temp = listPath.poll();
                 if (temp.getWord().equals(target)) {
@@ -34,7 +35,8 @@ public class UCS extends Controller{
                 else {
                     ucsLoop(temp, target);
 					expandedNode.put(temp.getWord(), true);
-                }
+					nodeCount += 1;
+				}
 			}
 			long end = System.currentTimeMillis();
 			System.out.println(this.found);
@@ -43,7 +45,8 @@ public class UCS extends Controller{
             Collections.reverse(pathList);
 			System.out.println(pathList);
 			System.out.printf("Time elapsed: %d\n", end-begin);	
-			return new ReturnElement(pathList, end-begin);
+			System.out.println((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory())/1024);
+			return new ReturnElement(pathList, end-begin, nodeCount);
 		}
 		return null;
 	}
