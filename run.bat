@@ -1,1 +1,2 @@
-java -XX:+PrintGCDetails -cp bin MainGUI/GUI
+cd bin
+java GUI

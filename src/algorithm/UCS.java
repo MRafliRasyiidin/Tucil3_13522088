@@ -16,39 +16,37 @@ public class UCS extends Controller{
     }
 
 	public ReturnElement ucs(String start, String target) {
-		if (start.length() != target.length()) {
-			System.out.println("Gabisa bro kalo panjangnya beda");
-		}
-		else {
-            Node startParent = new Node(null, start, 0);
-			this.listPath.add(startParent);
-			this.costList.put(startParent, 0);
-			long begin = System.currentTimeMillis();
-			Node targetNode = new Node();
-            int nodeCount = 0;
-			while (!this.found) {
-				Node temp = listPath.poll();
-                if (temp.getWord().equals(target)) {
-                    found = true;
-					targetNode.copy(temp);
-                }
-                else {
-                    ucsLoop(temp, target);
-					expandedNode.put(temp.getWord(), true);
-					nodeCount += 1;
-				}
+        Node startParent = new Node(null, start, 0);
+		this.listPath.add(startParent);
+		this.costList.put(startParent, 0);
+		long begin = System.currentTimeMillis();
+		Node targetNode = new Node();
+        int nodeCount = 0;
+		while (!this.found) {
+			Node temp = listPath.poll();
+			if (temp == null) {
+                return null;
+            }
+            if (temp.getWord().equals(target)) {
+                found = true;
+				targetNode.copy(temp);
+            }
+            else {
+                ucsLoop(temp, target);
+				expandedNode.put(temp.getWord(), true);
+				nodeCount += 1;
 			}
-			long end = System.currentTimeMillis();
-			System.out.println(this.found);
-			System.out.println(targetNode.getWord());
-            List<String> pathList = new ArrayList<String>(targetNode.getPath());
-            Collections.reverse(pathList);
-			System.out.println(pathList);
-			System.out.printf("Time elapsed: %d\n", end-begin);	
-			System.out.println((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory())/1024);
-			return new ReturnElement(pathList, end-begin, nodeCount);
 		}
-		return null;
+		long end = System.currentTimeMillis();
+        List<String> pathList = new ArrayList<String>(targetNode.getPath());
+        Collections.reverse(pathList);
+        System.out.println("\nResult:");
+		for (int i = 0; i < pathList.size(); i++) {
+            System.out.println((i+1) + ". " + pathList.get(i));
+        }
+		System.out.printf("Elapsed time: %d ms\n", end-begin);
+		System.out.println("Memory used: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory())/1024 + " KB");
+		return new ReturnElement(pathList, end-begin, nodeCount);		
 	}
 
 	public void ucsLoop(Node el, String end) {
