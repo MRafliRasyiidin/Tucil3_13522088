@@ -47,7 +47,7 @@ Note: cara ini akan menjalankan program dengan tampilan GUI dan mungkin hanya be
 # Cara Menggunakan Program
 1. Masukkan kata awal dan kata tujuan pada kolom yang disediakan
 2. Pilih metode yang ingin digunakan
-3. Program akan mengeluarkan solusi yang sesuai jika input benar dan mengeluarkan peringatan jika output salah
+3. Program akan mengeluarkan solusi yang sesuai jika input benar dan mengeluarkan peringatan jika input salah
 
 # Author
 Created by Muhamad Rafli Rasyiidin - 13522088
