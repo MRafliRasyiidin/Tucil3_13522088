@@ -29,7 +29,7 @@ java GUI
 javac Main.java
 java Main
 ```
-4. Kamus yang digunakan saat ini adalah dictionary_2.txt. Jika ingin mengganti kamus yang digunakan, pindahkan kamus baru ke dalam folder src/Dictionary. Kemudian ubah directory pada file Controller.java menjadi "Dictionary/Nama_kamus_baru.txt"
+4. Kamus yang digunakan saat ini adalah dictionary_2.txt. Jika ingin mengganti kamus yang digunakan, pindahkan kamus baru ke dalam folder src/Dictionary. Kemudian ubah pathname pada file Controller.java menjadi "Dictionary/Nama_kamus_baru.txt"
 ![image](https://github.com/MRafliRasyiidin/Tucil3_13522088/assets/118504604/1a90cb00-f40b-44b2-abeb-fc0c0af2b71c)
 
 # Cara Alternatif Menjalankan Program
